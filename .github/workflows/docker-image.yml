@@ -1,18 +1,23 @@
-name: Docker Image CI
+name: Build documentation
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+    - master
 
 jobs:
 
   build:
-
+ 
     runs-on: ubuntu-latest
-
+ 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: build-push
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        registry: docker.io
+        repository: tanguiRobin/ssc
+        tag_with_sha: true
